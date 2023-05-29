@@ -1,0 +1,583 @@
+1. Random Number
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import random
+
+points = [(random.uniform(0, 30), random.uniform(0, 30)) for i in range(100)]
+
+classes = [1 if x > y else 2 for (x, y) in points]
+
+from sklearn import svm, neural_network, naive_bayes, tree, ensemble
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(points, classes, test_size=0.3, random_state=42)
+
+svm_clf = svm.SVC(kernel='linear')
+svm_clf.fit(X_train, y_train)
+svm_acc = svm_clf.score(X_test, y_test)
+print("SVM accuracy:", svm_acc)
+
+nn_clf = neural_network.MLPClassifier(hidden_layer_sizes=(10,2))
+nn_clf.fit(X_train, y_train)
+nn_acc = nn_clf.score(X_test, y_test)
+print("Neural network accuracy:", nn_acc)
+
+nb_clf = naive_bayes.GaussianNB()
+nb_clf.fit(X_train, y_train)
+nb_acc = nb_clf.score(X_test, y_test)
+print("Naive Bayes accuracy:", nb_acc)
+
+dt_clf = tree.DecisionTreeClassifier()
+dt_clf.fit(X_train, y_train)
+dt_acc = dt_clf.score(X_test, y_test)
+print("Decision tree accuracy:", dt_acc)
+
+rf_clf = ensemble.RandomForestClassifier(n_estimators=100)
+rf_clf.fit(X_train, y_train)
+rf_acc = rf_clf.score(X_test, y_test)
+print("Random forest accuracy:", rf_acc)
+
+new_points = [(random.uniform(0, 30), random.uniform(0, 30)) for i in range(10)]
+
+svm_pred = svm_clf.predict(new_points)
+nn_pred = nn_clf.predict(new_points)
+nb_pred = nb_clf.predict(new_points)
+dt_pred = dt_clf.predict(new_points)
+rf_pred = rf_clf.predict(new_points)
+
+print("New points:", new_points)
+print("SVM predictions:", svm_pred)
+print("Neural network predictions:", nn_pred)
+print("Naive Bayes predictions:", nb_pred)
+print("Decision tree predictions:", dt_pred)
+print("Random forest predictions:", rf_pred)
+
+
+
+2.    Fake News Detection
+
+import pandas as pd
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import MultinomialNB
+
+data = pd.read_csv("fake_or_real_news.csv")
+print(data.head())
+
+x = np.array(data["title"])
+y = np.array(data["label"])
+
+cv = CountVectorizer()
+x = cv.fit_transform(x)
+
+xtrain, xtest, ytrain, ytest = train_test_split(x, y, test_size=0.2, random_state=42)
+model = MultinomialNB()
+model.fit(xtrain, ytrain)
+print(model.score(xtest, ytest))
+
+news_headline = "CA Exams 2021: Supreme Court asks ICAI to extend opt-out option for July exams, final order tomorrow"
+data = cv.transform([news_headline]).toarray()
+print(model.predict(data))
+
+
+
+3. Linear Regression 
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+dataset = pd.read_csv('Student.csv')
+x = dataset.iloc[:,:-1].values
+y = dataset.iloc[:, -1].values
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train, y_test = train_test_split(x,y,test_size=0.2, random_state = 0)
+
+from sklearn.linear_model import LinearRegression
+regressor = LinearRegression()
+regressor.fit(x_train,y_train)
+
+age = 22
+height = 170
+prediction = regressor.predict([[age, height]])
+
+print(f" For age {age} and  height {height} the weight is : {prediction[0]:.2f}")
+
+
+
+4.   Sbi Stock Prediction
+
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('SBIN.NS.csv')
+
+print(df.head())
+
+print(df.describe())
+
+high_peak_points = sbi_data[sbi_data['High'] == 1]
+plt.plot(sbi_data['Date'], sbi_data['Close'])
+plt.scatter(high_peak_points['Date'], high_peak_points['Close'], color='red')
+plt.xlabel('Date')
+plt.ylabel('Stock Price')
+plt.title('SBI Stock Price with High Peak Points')
+plt.show()
+
+
+sbi_data['Max'] = sbi_data['Close'].rolling(window=20).max()
+sbi_data['Min'] = sbi_data['Close'].rolling(window=20).min()
+sbi_data['Peak'] = np.where((sbi_data['Close'] == sbi_data['Max']) & (sbi_data['Max'] > sbi_data['Min']), 1, 0)
+
+
+
+high_peak_points = sbi_data[sbi_data['Peak'] == 1]
+plt.plot(sbi_data['Date'], sbi_data['Close'])
+plt.scatter(high_peak_points['Date'], high_peak_points['Close'], color='red')
+plt.xlabel('Date')
+plt.ylabel('Stock Price')
+plt.title('SBI Stock Price with High Peak Points')
+plt.show()
+     
+
+
+5. Anoova 
+
+
+import pandas as pd
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+
+df = pd.read_csv('Annova1.csv')
+df
+
+import seaborn as sns
+fig = sns.boxplot(x = "Edu_bac", y = "Salary", data = df)
+
+
+ano1 = ols('Salary ~ Edu_bac', data = df).fit()
+one1 = sm.stats.anova_lm(ano1, type=2)
+one1
+
+import pandas as pd
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+
+df = pd.read_csv('ANOVA2.csv')
+df
+
+ano1 = ols('Salary ~ Edu_Back', data = df).fit()
+one1 = sm.stats.anova_lm(ano1, type=2)
+one1
+
+
+ano2 = ols('Salary ~ Edu_Back + Work_exp', data = df).fit()
+one2 = sm.stats.anova_lm(ano2, type=2)
+one2
+     
+
+
+6. Decision tree
+
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("D:\\CIT Semester Notes\\6th sem notes\\Machine Learning\\lab\\DT.csv") 
+
+
+x = df.drop(['CustomerID', 'Purchased'], axis = 'columns')
+x
+
+
+y = df['Purchased']
+y
+
+from sklearn.preprocessing import LabelEncoder
+label = LabelEncoder()
+
+x = x.apply(LabelEncoder().fit_transform)
+x
+
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.3)
+
+
+len(x_train)
+
+len(x_test)
+
+
+x_test
+
+from sklearn import tree
+model = tree.DecisionTreeClassifier()
+model.fit(x, y)
+
+
+model.predict([[1, 1, 2]])
+
+
+model.predict(x_test)
+
+
+tree.plot_tree(model)
+
+
+fig = plt.figure(figsize=(7,7))
+h = tree.plot_tree(model, 
+                   feature_names = ['Age', 'Gender', 'Income'], class_names =['0', '1'],
+                   filled=True)
+
+
+
+
+
+7.  dibities Prediction
+
+import pandas as pd
+import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+
+df = pd.read_csv('diabetes.csv')
+df
+
+x = df.drop(['Outcome'],axis = 'columns')
+x
+
+y = df['Outcome']
+y
+
+from sklearn.model_selection import train_test_split
+x_train, x_test , y_train , y_test = train_test_split(x , y , test_size = 0.3)
+
+x_test
+
+
+x_train
+
+
+model = keras.Sequential([
+    keras.layers.Dense(10, input_shape = (8,),activation = 'relu'),
+    keras.layers.Dense(8, activation = 'relu'),
+    keras.layers.Dense(1, activation = 'sigmoid')])
+
+
+
+model.compile(optimizer = 'adam',
+              loss = 'binary_crossentropy',
+              metrics=['accuracy'] )
+
+
+
+model.fit(x_train, y_train, epochs=1000)
+
+
+model.evaluate(x_test, y_test)
+
+p=model.predict(x_test)
+p[:10]
+
+y_pred = []
+for element in p:
+  if (element > 0.5):
+    y_pred.append(1)
+  else:
+    y_pred.append(0)
+
+
+
+y_pred[:10]
+
+y_test[:10]
+
+
+
+
+
+
+8.  K-mean
+
+
+
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+from matplotlib import pyplot as plt
+
+
+df = pd.read_csv("kluster.csv")
+df
+    
+
+plt.scatter(df['attendence'], df['marks'])
+plt.xlabel('attendence')
+plt.ylabel('marks')
+
+
+from sklearn.cluster import KMeans
+
+
+
+km = KMeans(n_clusters=3)
+
+
+y_pred = km.fit_predict(df[['attendence', 'marks']])
+y_pred
+
+
+df['cluster'] = y_pred
+df
+
+
+df1 = df[df.cluster==0]
+df2 = df[df.cluster==1]
+df3 = df[df.cluster==2]
+plt.scatter(df1.attendence, df1['marks'], color='green')
+plt.scatter(df2.attendence, df2['marks'], color='red')
+plt.scatter(df3.attendence, df3['marks'], color='blue')
+plt.xlabel('attendence')
+plt.ylabel('marks')
+
+
+scale = MinMaxScaler()
+
+scale.fit(df[['marks']])
+df['marks'] = scale.transform(df[['marks']])
+
+scale.fit(df[['attendence']])
+df['attendence'] = scale.transform(df[['attendence']])
+
+
+
+
+df.head()
+
+
+km = KMeans(n_clusters=3)
+y_pred = km.fit_predict(df[['attendence', 'marks']])
+y_pred
+
+
+df = df.drop(['cluster'], axis='columns')
+df
+
+
+df['cluster'] = y_pred
+df
+
+
+km.cluster_centers_
+
+
+plt.scatter(df1.attendence, df1['marks'], color='green')
+plt.scatter(df2.attendence, df2['marks'], color='red')
+plt.scatter(df3.attendence, df3['marks'], color='blue')
+plt.xlabel('attendence')
+plt.ylabel('marks')
+
+
+
+sse = []
+k_range = range(1,5)
+for k in k_range:
+      km = KMeans(n_clusters=k)
+      km.fit(df[['attendence', 'marks']])
+      sse.append(km.inertia_)
+
+
+
+
+plt.xlabel('K')
+plt.ylabel('Sum of squared error')
+plt.plot(k_range, sse)
+
+
+
+
+
+8. Naive bayes 
+
+
+import pandas as pd
+import numpy as np
+
+
+df = pd.read_csv('Naive1.csv')
+df
+
+df.drop('Name', axis = 'columns', inplace = True)
+df
+
+dummies = pd.get_dummies(df.Gender)
+dummies
+     
+
+df = pd.concat([df , dummies], axis = 'columns')
+df
+
+
+df.drop('Gender',axis = 'columns' , inplace = True)
+df
+
+from sklearn.model_selection import train_test_split
+x_train, x_test , y_train , y_test = train_test_split(df[['Chol', 'Female', 'Male']],df.Target , test_size = 0.1)
+
+len(x_train)
+
+
+
+x_train
+
+
+
+from sklearn.naive_bayes import MultinomialNB
+
+
+model = MultinomialNB()
+
+
+model.fit(x_train,y_train)
+
+
+model.predict(x_test)
+
+
+
+model.predict_proba(x_test)
+
+
+
+model.score(x_test, y_test)
+
+
+
+import pandas as pd
+from matplotlib import pyplot as plt
+%matplotlib inline
+
+
+df = pd.read_csv('Log1.csv')
+df.head()
+
+
+from sklearn.model_selection import train_test_split
+x_train , x_test , y_train , y_test = train_test_split(df[['age']],df.smartphone , test_size = 0.2 )
+
+
+
+len(x_train)
+
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+model.fit(x_train,y_train)
+
+
+model.predict([[11]])
+
+
+
+model.predict(x_test)
+
+
+model.predict_proba(x_test)
+
+
+
+model.score(x_test , y_test)
+
+
+
+import seaborn as sns
+
+
+
+plt.scatter(df.age, df.smartphone)
+
+
+
+sns.regplot(x=df.age, y = df.smartphone, data = df, logistic = True, ci = None)
+
+
+
+
+
+9. irires Flower
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sn
+
+from sklearn.datasets import load_iris
+iris = load_iris()
+
+dir(iris)
+
+iris.feature_names
+
+df = pd.DataFrame(iris.data,columns = iris.feature_names)
+df.head()
+
+
+df['target'] = iris.target
+df
+
+iris.target_names
+
+df[df.target==2].head()
+
+from sklearn.model_selection import train_test_split
+x = df.drop(['target'], axis = 'columns')
+x.head()
+
+
+y = df.target
+y.head()
+
+x_train,x_test,y_train,y_test = train_test_split(x, y, test_size = 0.3)
+
+len(x_train)
+
+from sklearn.svm import SVC
+model = SVC()
+
+
+model.fit(x_train,y_train)
+
+from sklearn.metrics import confusion_matrix
+y_prediction = model.predict(x_test)
+cm = confusion_matrix(y_test, y_prediction)
+cm
+
+%matplotlib inline
+plt.figure(figsize = (5,3))
+sn.heatmap(cm, annot = True)
+plt.xlabel('predicted')
+plt.ylabel('truth')
+
+
+from sklearn.metrics import classification_report
+
+
+
+print(classification_report(y_test,y_prediction))
+
+
+#precision : TP/(TP+FP)
+15/17
+
+
+
+
+
+
